@@ -38,7 +38,7 @@ HEIGHT = 600
 FPS = 50
 
 # Координаты, где будет стоять башня (примерно центр)
-TOWER_POS = (350, 250)
+TOWER_POS = (400, 300)
 
 # Цвета
 WHITE = (255, 255, 255)
@@ -271,9 +271,7 @@ class Goblin(Monster):
         super().__init__(images_list, x, y, speed=3, damage=5, health=50)
 
 
-# -----------------------------------------------------------------------------------
-# ------------------------ КЛАСС ДЛЯ Орка (Наследует Monster) ------------------------
-# -----------------------------------------------------------------------------------
+# ------------------------ КЛАСС ДЛЯ Орка ------------------------
 class Orc(Monster):
     """
     Орк — медлительный, но с большим уроном и здоровьем.
@@ -286,6 +284,20 @@ class Orc(Monster):
             load_image("monster_orc_3.png"),
         ]
         super().__init__(images_list, x, y, speed=1, damage=20, health=150)
+
+
+class Golem(Monster):
+    """
+    Голем — очень медленный, но с большим уроном и высоким здоровьем.
+    """
+    def __init__(self, x, y):
+        images_list = [
+            load_image("monster_golem_1.png"),
+            load_image("monster_golem_2.png"),
+            load_image("monster_golem_3.png"),
+        ]
+        # speed=1 (самый медленный), damage=30, health=200 (усиленные характеристики)
+        super().__init__(images_list, x, y, speed=1, damage=30, health=200)
 
 
 # -----------------------------------------------------------------------------------
@@ -462,7 +474,7 @@ class TowerDefenceGame:
         self.levels = [
             GameLevel([(Goblin, 5, 60), (Orc, 2, 120)]),
             GameLevel([(Goblin, 10, 30), (Orc, 3, 90)]),
-            GameLevel([(Goblin, 5, 40)])
+            GameLevel([(Goblin, 5, 100), (Golem, 1, 50)])
         ]
         self.current_level_index = 0
         self.monsters = pygame.sprite.Group()
@@ -632,7 +644,7 @@ class TowerDefenceGame:
         self.screen.blit(tower_health_text, (10, 10))
 
         # Деньги
-        money_text = self.font_small.render(f"Деньги: {self.money}", True, WHITE)
+        money_text = self.font_small.render(f"Деньги: {int(self.money)}", True, WHITE)
         self.screen.blit(money_text, (10, 30))
 
         # Счёт
